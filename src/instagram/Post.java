@@ -75,14 +75,4 @@ public class Post {
         return comments;
     }
     
-/*
-    public List<Post> getReTweet(){
-        List<Post> reTweet = new ArrayList<>();
-        for(Post tweet: posts){
-            if(tweet.getTweetType() == PostType.ReTweet){
-                reTweet.add(tweet);
-            }
-        }
-        return reTweet;
-    }*/
 }
