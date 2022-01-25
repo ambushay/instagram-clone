@@ -3,6 +3,8 @@ package UserView;
 import instagram.Post;
 import instagram.PostType;
 import instagram.PostUserRelation;
+import messaging.Chatroom;
+import UserManagment.UserUserRelation;
 import UserManagment.User;
 
 import java.io.IOException;
@@ -10,7 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class VisitPage {/*
+
+public class VisitPage {
 	private static Scanner scanner = new Scanner(System.in);
 	private User user;
 	private User visited;
@@ -29,7 +32,8 @@ public class VisitPage {/*
         System.out.println("1. Show their posts");
         System.out.println("2. follow/ unfollow");
         System.out.println("3. block/ unblock");
-        System.out.println("4. log out");
+        System.out.println("4. chat");
+        System.out.println("5. log out");
     }
 	
     public void run() {
@@ -38,15 +42,17 @@ public class VisitPage {/*
             System.out.println("choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
-            if (choice == 4) {
+            if (choice == 5) {
                 return;
             }
             if (choice == 1) {
             	showTheirPosts();
             } else if (choice == 2) {
-                
+                followUnfollow();
             } else if (choice == 3) {
-                
+                blockUnblock();
+            } else if (choice == 4) {
+            	startChat();
             }
         }
     }
@@ -78,24 +84,35 @@ public class VisitPage {/*
     }
     
     private void showTheirPosts() {
+    	UserUserRelation.getBlockedDatabase();
+    	
         List<Post> posts = visited.getPosts();
         showPosts(posts);
     }
     
-    public void followUnfollow(User visited) {
-        List<PostUserRelation> postUserRelations = visited.getPostUserRelations();
-        for (PostUserRelation postUserRelation : postUserRelations) {
-            if(postUserRelation.getPostUser() == this){
-                boolean liked = postUserRelation.isLiked();
-                postUserRelation.setLiked(!liked);
-                return;
-            }
-        }
-        PostUserRelation postUserRelation = new PostUserRelation();
-        postUserRelation.setLiked(true);
-        postUserRelation.setFavorite(false);
-        postUserRelation.setPostUser(this);
-        visited.getPostUserRelations().add(postUserRelation);
+    private void followUnfollow() {
+    	
     }
-	*/
+    
+    private void blockUnblock() {
+    	
+    }
+    
+    private void startChat() {
+    	List<Chatroom> chats = Chatroom.getAllchats();
+    	for (Chatroom chat : chats) {
+    		if((chat.getSender() == user && chat.getReceiver() == visited) || (chat.getSender() == visited && chat.getReceiver() == user)) {
+    			ChatroomPage chatroomPage = new ChatroomPage (chat, user);
+    			chatroomPage.run();
+    			return;
+    		}
+    	}
+    	Chatroom newChatroom = new Chatroom(user, visited);
+    	chats.add(newChatroom);
+    	Chatroom.setAllchats(chats);
+    	ChatroomPage chatroomPage = new ChatroomPage (newChatroom, user);
+		chatroomPage.run();
+    }
+    
+	
 }

@@ -2,6 +2,7 @@ package UserView;
 
 import instagram.Post;
 import instagram.PostType;
+import messaging.Chatroom;
 import UserManagment.User;
 
 import java.io.IOException;
@@ -27,7 +28,8 @@ public class UserPage {
         System.out.println("2. Show my posts");
         System.out.println("3. Show all posts");
         System.out.println("4. Search post by keyword");
-        System.out.println("5. log out");
+        System.out.println("5. Show my chatrooms");
+        System.out.println("6. log out");
     }
 
     private Post makePost() {
@@ -44,7 +46,7 @@ public class UserPage {
             System.out.println("choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
-            if (choice == 5) {
+            if (choice == 6) {
                 return;
             }
             if (choice == 1) {
@@ -55,6 +57,8 @@ public class UserPage {
                 showAllPosts();
             } else if (choice == 4) {
                 searchByKeyword();
+            } else if (choice == 5) {
+            	showRooms();
             }
         }
     }
@@ -90,7 +94,7 @@ public class UserPage {
             System.out.println((i + 1) + ". " + post.getText());
             ++i;
         }
-        System.out.println("Choose a tweet by number (-1 to exit): ");
+        System.out.println("Choose a post by number (-1 to exit): ");
         int choice = scanner.nextInt();
         scanner.nextLine();
         if (choice == -1) {
@@ -105,4 +109,33 @@ public class UserPage {
         PostPage postPage = new PostPage(post, user);
         postPage.run();
     }
+    
+	private void showRooms() {
+		List<Chatroom> chatrooms = user.getChats();
+		if(chatrooms.isEmpty()){
+            System.out.println("Empty!");
+            return;
+        }
+		int i = 0;
+        for (Chatroom chat : chatrooms) {
+            System.out.println((i + 1) + ". " + chat.getName());
+            ++i;
+        }
+        System.out.println("Choose a chat by number (-1 to exit): ");
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+        if (choice == -1) {
+            return;
+        }
+        --choice;
+        if(choice >= chatrooms.size()){
+            System.out.println("Invalid option");
+            return;
+        }
+        Chatroom chatroom = chatrooms.get(choice);
+        ChatroomPage chatPage = new ChatroomPage(chatroom, user);
+        chatPage.run();
+	}
+	
+	
 }
