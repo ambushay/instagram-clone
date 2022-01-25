@@ -1,12 +1,14 @@
 package UserManagment;
 
 import instagram.Poster;
+import messaging.Chatroom;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class User extends Poster{
 	private static List<User> users = new ArrayList<>();
+	private List<Chatroom> chats = new ArrayList<>();
     private String username;
     private String password;
 
@@ -37,6 +39,14 @@ public class User extends Poster{
 
     public static void setUsers(List<User> users) {
         User.users = users;
+    }
+    
+    public List<Chatroom> getChats(){
+    	return chats;
+    }
+    
+    public void setChats(List<Chatroom> chtl) {
+    	this.chats = chtl;
     }
 
     public void follow(User user) {
@@ -78,6 +88,20 @@ public class User extends Poster{
         return following;
     }
 
+    public void block(User user) {
+        List<UserUserRelation> userRelationUsers = UserUserRelation.getBlockedDatabase();
+
+        for (UserUserRelation userRelationUser : userRelationUsers) {
+            if (userRelationUser.getBlocker() == this && userRelationUser.getBlocked() == user) {
+                userRelationUsers.remove(userRelationUser);
+                return;
+            }
+        }
+
+        UserUserRelation userRelationUser = new UserUserRelation();
+        userRelationUser.setBlocker(this);
+        userRelationUser.setBlocked(user);
+    }
 
     public static User signUp(String username, String password){
         for (User user : users){
