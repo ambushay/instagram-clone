@@ -3,6 +3,7 @@ package UserView;
 import Messaging.Chatroom;
 import PostManagement.Post;
 import UserManagement.User;
+import UserManagement.Profile;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +33,8 @@ public class UserPage {
         System.out.println("6. show my followers");
         System.out.println("7. show my following");
         System.out.println("8. show All Users of the system");
-        System.out.println("9. log out");
+        System.out.println("9. edit profile");
+        System.out.println("10. log out");
     }
 
     private Post makePost() {
@@ -51,7 +53,7 @@ public class UserPage {
             System.out.println("choose an option: ");
             int choice = scanner.nextInt();
             scanner.nextLine();
-            if (choice == 9) {
+            if (choice == 10) {
                 return;
             }
             if (choice == 1) {
@@ -70,6 +72,8 @@ public class UserPage {
                 showFollowings();
             }else if (choice == 8){
                 showAllUsers();
+            }else if (choice == 9){
+                editProfile();
             }
         }
     }
@@ -230,5 +234,30 @@ public class UserPage {
         User newUser = users.get(choice);
         VisitPage visitPage = new VisitPage(user, newUser);
         visitPage.run();
+    }
+    
+    public void editProfile() {
+    	
+    	//Profile edited = new Profile();
+    	//edited = user.getProfile();
+    	
+    	System.out.println("enter email: ");
+    	String mail = scanner.nextLine();
+    	//edited.setEmail(mail);
+    	
+    	System.out.println("enter phone number: ");
+    	String phonenum = scanner.nextLine();
+    	//edited.setPhoneNumber(phonenum);
+    	
+    	System.out.println("enter age: ");
+    	String age = scanner.nextLine();
+    	//edited.setAge(age);
+    	
+    	System.out.println("enter biography: ");
+    	String bio = scanner.nextLine();
+    	//edited.setBiography(bio);
+    	
+    	Profile edited = new Profile(mail, phonenum, age, bio);
+    	user.setProfile(edited);
     }
 }
