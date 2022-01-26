@@ -11,7 +11,12 @@ public class Profile {
     private String email;
     private BufferedImage bufferedImage;
 
-    public Profile() { }
+    public Profile(String mail, String num, String age, String bio) {
+    	this.email = mail;
+    	this.phoneNumber = num;
+    	this.age = age;
+    	this.biography = bio;
+    }
 
     public Profile(String nickname) { this.nickname = nickname; }
 
